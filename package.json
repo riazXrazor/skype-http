@@ -4,7 +4,7 @@
   "version": "0.0.15",
   "license": "MIT",
   "main": "dist/src/lib/index",
-  "types": "dist/src/lib/index.d.ts",
+  "types": "src/lib/index.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/ocilo/skype-http.git"
