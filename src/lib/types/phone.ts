@@ -18,6 +18,4 @@ export const $Phone: DocumentType<Phone> = new DocumentType<Phone>({
     type: {type: new Ucs2StringType({maxLength: Infinity})},
     number: {type: new Ucs2StringType({maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
 });

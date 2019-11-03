@@ -59,7 +59,7 @@ export class ContactsService {
 
     let result: GetInvitesResult;
     try {
-      result = $GetInvitesResult.readJson(parsed);
+      result = parsed;
     } catch (err) {
       throw new Incident(err, "UnexpectedResult", {body: parsed});
     }

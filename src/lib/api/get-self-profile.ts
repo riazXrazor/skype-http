@@ -32,7 +32,7 @@ export async function getSelfProfile(
   }
   let result: ApiProfile;
   try {
-    result = $ApiProfile.readJson(parsed);
+    result = parsed;
   } catch (err) {
     throw new Incident(err, "UnexpectedResult", {body: parsed});
   }

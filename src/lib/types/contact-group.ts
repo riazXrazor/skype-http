@@ -25,6 +25,4 @@ export const $ContactGroup: DocumentType<ContactGroup> = new DocumentType<Contac
     name: {type: new Ucs2StringType({maxLength: Infinity})},
     isFavorite: {type: new BooleanType(), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
 });

@@ -22,5 +22,4 @@ export const $InviteMessage: DocumentType<InviteMessage> = new DocumentType<Invi
     message: {type: new Ucs2StringType({maxLength: Infinity})},
     time: {type: new DateType()},
   },
-  ignoreExtraKeys: true,
 });

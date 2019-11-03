@@ -61,11 +61,11 @@ function agentToPerson(native: any): any {
 }
 
 // TODO: check that the uri uses the HTTPS protocol
-function ensureHttps(uri: string) {
+function ensureHttps(uri: string): any {
   return uri;
 }
 
-function define(...args: any[]) {
+function define(...args: any[]): any {
   return null;
 }
 

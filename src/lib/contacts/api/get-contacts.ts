@@ -31,7 +31,7 @@ export async function getContacts(httpIo: io.HttpIo, apiContext: Context): Promi
 
   let result: GetUserResult;
   try {
-    result = $GetUserResult.readJson(parsed);
+    result = parsed;
   } catch (err) {
     throw new Incident(err, "UnexpectedResult", {body: parsed});
   }

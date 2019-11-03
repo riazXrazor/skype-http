@@ -40,6 +40,4 @@ export const $Invite: DocumentType<Invite> = new DocumentType<Invite>({
     avatarUrl: {type: $Url},
     invites: {type: new ArrayType({itemType: $InviteMessage, maxLength: Infinity})},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
 });

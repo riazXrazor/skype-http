@@ -22,6 +22,4 @@ export const $Location: DocumentType<Location> = new DocumentType<Location>({
     city: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
     state: {type: new Ucs2StringType({maxLength: Infinity}), optional: true},
   },
-  rename: CaseStyle.SnakeCase,
-  ignoreExtraKeys: true,
 });
