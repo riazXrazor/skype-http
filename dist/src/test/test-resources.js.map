@@ -1,0 +1,1 @@
+{"version":3,"file":"test-resources.js","sourceRoot":"","sources":["../../../src/test/test-resources.ts"],"names":[],"mappings":";;AAAA,2BAAoB;AACpB,+BAAwB;AAExB,MAAM,iBAAiB,GAAW,cAAI,CAAC,IAAI,CAAC,SAAS,EAAE,gBAAgB,CAAC,CAAC;AAEzE,SAAgB,oBAAoB,CAAC,QAAgB;IACnD,OAAO,YAAE,CAAC,YAAY,CAAC,cAAI,CAAC,OAAO,CAAC,iBAAiB,EAAE,QAAQ,CAAC,EAAE,MAAM,CAAC,CAAC;AAC5E,CAAC;AAFD,oDAEC"}

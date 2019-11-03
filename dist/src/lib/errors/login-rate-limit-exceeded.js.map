@@ -1,0 +1,1 @@
+{"version":3,"file":"login-rate-limit-exceeded.js","sourceRoot":"","sources":["../../../../src/lib/errors/login-rate-limit-exceeded.ts"],"names":[],"mappings":";;AAAA,uCAAoC;AAIvB,QAAA,IAAI,GAAS,wBAAwB,CAAC;AAWnD,SAAgB,MAAM,CAAC,GAAe,EAAE,GAAa;IACnD,OAAO,mBAAQ,CAAC,YAAI,EAAE,EAAC,GAAG,EAAE,GAAG,EAAC,CAAC,CAAC;AACpC,CAAC;AAFD,wBAEC"}

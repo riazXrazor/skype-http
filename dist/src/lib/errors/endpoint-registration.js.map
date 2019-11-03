@@ -1,0 +1,1 @@
+{"version":3,"file":"endpoint-registration.js","sourceRoot":"","sources":["../../../../src/lib/errors/endpoint-registration.ts"],"names":[],"mappings":";;AAAA,uCAAoC;AAsBvB,QAAA,IAAI,GAAS,sBAAsB,CAAC;AAQjD,MAAa,yBAA0B,SAAQ,mBAA2B;IAGxE,YAAY,KAAY,EAAE,KAAqB;QAC7C,KAAK,CAAC,KAAK,EAAE,yBAAyB,CAAC,IAAI,EAAE,EAAC,KAAK,EAAC,CAAC,CAAC;IACxD,CAAC;;AALH,8DAMC;AALQ,8BAAI,GAAS,YAAI,CAAC"}
