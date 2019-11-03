@@ -1,3 +1,4 @@
+import camelcaseKeys from "camelcase-keys";
 import { Incident } from "incident";
 import { UnexpectedHttpStatusError } from "../errors/http";
 import { Context } from "../interfaces/api/context";
@@ -52,7 +53,7 @@ export class ContactsService {
     }
     let parsed: any;
     try {
-      parsed = JSON.parse(response.body);
+      parsed = camelcaseKeys(JSON.parse(response.body),{deep: true});
     } catch (err) {
       throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
     }
