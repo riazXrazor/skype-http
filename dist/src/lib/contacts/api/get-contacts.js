@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -16,6 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const camelcase_keys_1 = __importDefault(require("camelcase-keys"));
 const incident_1 = require("incident");
 const http_1 = require("../../errors/http");
 const contactsUrl = __importStar(require("../contacts-url"));
@@ -38,6 +42,7 @@ function getContacts(httpIo, apiContext) {
         let parsed;
         try {
             parsed = JSON.parse(response.body);
+            parsed = camelcase_keys_1.default(parsed, { deep: true });
         }
         catch (err) {
             throw new incident_1.Incident(err, "UnexpectedResponseBody", { body: response.body });

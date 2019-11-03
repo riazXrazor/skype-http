@@ -53,7 +53,8 @@ export class ContactsService {
     }
     let parsed: any;
     try {
-      parsed = camelcaseKeys(JSON.parse(response.body),{deep: true});
+      parsed = JSON.parse(response.body);
+      parsed = camelcaseKeys(parsed, {deep: true});
     } catch (err) {
       throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
     }

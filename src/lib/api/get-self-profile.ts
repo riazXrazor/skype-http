@@ -1,3 +1,4 @@
+import camelcaseKeys from "camelcase-keys";
 import { Incident } from "incident";
 import toughCookie from "tough-cookie";
 import * as apiUri from "../api-uri";
@@ -27,6 +28,7 @@ export async function getSelfProfile(
   let parsed: any;
   try {
     parsed = JSON.parse(response.body);
+    parsed = camelcaseKeys(parsed, {deep: true});
   } catch (err) {
     throw new Incident(err, "UnexpectedResponseBody", {body: response.body});
   }
