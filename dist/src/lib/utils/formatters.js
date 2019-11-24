@@ -9,10 +9,12 @@ const mri_1 = require("../mri");
 const user_data_processor_1 = require("./user-data-processor");
 function formatConversation(native) {
     // TODO: parse id
-    if (native.id.indexOf("19:") === 0) { // thread
+    if (native.id.indexOf("19:") === 0) {
+        // thread
         return native;
     }
-    else { // private
+    else {
+        // private
         const contact = native.id;
         const result = native;
         result.members = [contact];
@@ -20,8 +22,21 @@ function formatConversation(native) {
     }
 }
 exports.formatConversation = formatConversation;
+// export function formatMessage(native: NativeMessage): Message {
+//   // TODO: parse id
+//   if (native.conversationid.indexOf("19:") === 0) {
+//     // thread
+//     return native;
+//   } else {
+//     // private
+//     const contact: string = native.conversationid;
+//     const result: Message = native;
+//     result.members = [contact];
+//     return result;
+//   }
+// }
 function formatThread(native) {
-    const memberIds = lodash_1.default.map(native.members, ((member) => member.id));
+    const memberIds = lodash_1.default.map(native.members, (member) => member.id);
     const properties = {};
     if ("properties" in native) {
         if ("topic" in native.properties) {
@@ -52,8 +67,7 @@ function formatContact(native) {
 }
 exports.formatContact = formatContact;
 // github:demurgos/skype-web-reversed -> jSkype/modelHelpers/contacts/dataMappers/agentToPerson.js
-function agentToPerson(native) {
-}
+function agentToPerson(native) { }
 // TODO: check that the uri uses the HTTPS protocol
 function ensureHttps(uri) {
     return uri;
@@ -71,8 +85,8 @@ function searchContactToPerson(native) {
         avatarUrl = null;
     }
     const displayName = user_data_processor_1.sanitizeXml(native.displayname);
-    const firstName = (native.firstname !== undefined) ? user_data_processor_1.sanitizeXml(native.firstname) : null;
-    const lastName = (native.lastname !== undefined) ? user_data_processor_1.sanitizeXml(native.lastname) : null;
+    const firstName = native.firstname !== undefined ? user_data_processor_1.sanitizeXml(native.firstname) : null;
+    const lastName = native.lastname !== undefined ? user_data_processor_1.sanitizeXml(native.lastname) : null;
     const phoneNumbers = [];
     const locations = [];
     const type = mri_1.MriType.Skype;

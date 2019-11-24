@@ -1,4 +1,4 @@
-import { MessageResource } from "./resources";
+import {MessageResource} from "./resources";
 
 export interface ThreadProperties {
   topic?: string;
@@ -33,8 +33,30 @@ export interface Conversation {
   messages: string;
 }
 
-export type Capability = "AddMember" | "ChangeTopic" | "ChangePicture" | "EditMsg" | "CallP2P"
-  | "SendText" | "SendSms" | "SendContacts" | "SendVideoMsg" | "SendMediaMsg" | "ChangeModerated";
+export interface Message {
+  clientmessageid: string;
+  composetime: string;
+  content: string;
+  conversationLink: string;
+  from: string;
+  messagetype: string;
+  originalarrivaltime: string;
+  type: string;
+  version: string;
+}
+
+export type Capability =
+  | "AddMember"
+  | "ChangeTopic"
+  | "ChangePicture"
+  | "EditMsg"
+  | "CallP2P"
+  | "SendText"
+  | "SendSms"
+  | "SendContacts"
+  | "SendVideoMsg"
+  | "SendMediaMsg"
+  | "ChangeModerated";
 
 export interface ThreadMember {
   // "8:..."

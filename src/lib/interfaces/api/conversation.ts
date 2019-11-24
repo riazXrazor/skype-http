@@ -11,3 +11,15 @@ export interface Conversation {
   version: number; // a timestamp ? example: 1464030261015
   members?: string[]; // array of ids
 }
+
+export interface Message {
+  clientmessageid: string;
+  composetime: string;
+  content: string;
+  conversationLink: string;
+  from: string;
+  messagetype: string;
+  originalarrivaltime: string;
+  type: string;
+  version: string;
+}

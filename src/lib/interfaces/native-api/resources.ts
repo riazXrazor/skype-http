@@ -1,4 +1,4 @@
-import { RichText, Text } from "./message-resources";
+import {RichText, Text} from "./message-resources";
 
 export interface Resource {
   type: "Message" | "UserPresenceDoc" | "EndpointPresenceDoc" | string;
@@ -13,9 +13,19 @@ export interface ConversationUpdate extends Resource {
 
 export interface MessageResource extends Resource {
   type: "Message";
-  messagetype: "Control/LiveState" | "Control/ClearTyping" | "Control/Typing" | "Event/Call"
-  | "RichText" | "RichText/UriObject" | "RichText/Location" | "RichText/Media_GenericFile"
-  | "RichText/Media_Video" | "Signal/Flamingo" | "Text" | string; // TODO
+  messagetype:
+    | "Control/LiveState"
+    | "Control/ClearTyping"
+    | "Control/Typing"
+    | "Event/Call"
+    | "RichText"
+    | "RichText/UriObject"
+    | "RichText/Location"
+    | "RichText/Media_GenericFile"
+    | "RichText/Media_Video"
+    | "Signal/Flamingo"
+    | "Text"
+    | string; // TODO
   ackrequired: string;
   // JSON date
   originalarrivaltime: string;

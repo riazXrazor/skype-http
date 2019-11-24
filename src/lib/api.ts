@@ -1,28 +1,29 @@
 import events from "events";
-import {acceptContactRequest} from "./api/accept-contact-request";
-import {addMemberToConversation} from "./api/add-member";
-import {createConversation} from "./api/create-conversation";
-import {declineContactRequest} from "./api/decline-contact-request";
-import {getContact} from "./api/get-contact";
-import {getConversation} from "./api/get-conversation";
-import {getConversations} from "./api/get-conversations";
-import {getJoinUrl} from "./api/get-join-url";
-import {sendFile} from "./api/send-file";
-import {sendImage} from "./api/send-image";
-import {sendMessage} from "./api/send-message";
-import {setConversationTopic} from "./api/set-conversation-topic";
-import {setStatus} from "./api/set-status";
-import {ContactsInterface, ContactsService} from "./contacts/contacts";
+import { acceptContactRequest } from "./api/accept-contact-request";
+import { addMemberToConversation } from "./api/add-member";
+import { createConversation } from "./api/create-conversation";
+import { declineContactRequest } from "./api/decline-contact-request";
+import { getContact } from "./api/get-contact";
+import { getConversation } from "./api/get-conversation";
+import { getConversations } from "./api/get-conversations";
+import { getJoinUrl } from "./api/get-join-url";
+import { getMessages } from "./api/get-messages";
+import { sendFile } from "./api/send-file";
+import { sendImage } from "./api/send-image";
+import { sendMessage } from "./api/send-message";
+import { setConversationTopic } from "./api/set-conversation-topic";
+import { setStatus } from "./api/set-status";
+import { ContactsInterface, ContactsService } from "./contacts/contacts";
 import * as api from "./interfaces/api/api";
-import {Contact as _Contact} from "./interfaces/api/contact";
-import {Context as ApiContext} from "./interfaces/api/context";
-import {Conversation} from "./interfaces/api/conversation";
+import { Contact as _Contact } from "./interfaces/api/contact";
+import { Context as ApiContext } from "./interfaces/api/context";
+import { Conversation, Message } from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
-import {HttpIo} from "./interfaces/http-io";
-import {AllUsers} from "./interfaces/native-api/conversation";
-import {MessagesPoller} from "./polling/messages-poller";
-import {Contact} from "./types/contact";
-import {Invite} from "./types/invite";
+import { HttpIo } from "./interfaces/http-io";
+import { AllUsers } from "./interfaces/native-api/conversation";
+import { MessagesPoller } from "./polling/messages-poller";
+import { Contact } from "./types/contact";
+import { Invite } from "./types/invite";
 
 export interface ApiEvents extends NodeJS.EventEmitter {}
 
@@ -74,6 +75,10 @@ export class Api extends events.EventEmitter implements ApiEvents {
 
   async getConversations(): Promise<Conversation[]> {
     return getConversations(this.io, this.context);
+  }
+
+  async getMessages(conversationId: string): Promise<Message[]> {
+    return getMessages(this.io, this.context, conversationId);
   }
 
   async sendMessage(
