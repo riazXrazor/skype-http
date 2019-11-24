@@ -106,11 +106,15 @@ function buildObject(objectId) {
 }
 // /v1/objects/{objectId}/content/{content}
 function buildObjectContent(objectId, content) {
-    return buildObject(objectId).concat("content").concat(content);
+    return buildObject(objectId)
+        .concat("content")
+        .concat(content);
 }
 // /v1/objects/{objectId}/view/{content}
 function buildObjectView(objectId, view) {
-    return buildObject(objectId).concat("view").concat(view);
+    return buildObject(objectId)
+        .concat("view")
+        .concat(view);
 }
 /**
  * Returns an URI origin like: "https://host.com"
@@ -232,7 +236,7 @@ function parseMessage(uri) {
         host: parsed.host,
         user: match[1],
         conversation: match[2],
-        message: match[3],
+        message: match[3]
     };
 }
 exports.parseMessage = parseMessage;
@@ -248,7 +252,7 @@ function parseContact(uri) {
     return {
         host: parsed.host,
         user: match[1],
-        contact: match[2],
+        contact: match[2]
     };
 }
 exports.parseContact = parseContact;
@@ -264,7 +268,7 @@ function parseConversation(uri) {
     return {
         host: parsed.host,
         user: match[1],
-        conversation: match[2],
+        conversation: match[2]
     };
 }
 exports.parseConversation = parseConversation;

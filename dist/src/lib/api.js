@@ -21,6 +21,7 @@ const get_contact_1 = require("./api/get-contact");
 const get_conversation_1 = require("./api/get-conversation");
 const get_conversations_1 = require("./api/get-conversations");
 const get_join_url_1 = require("./api/get-join-url");
+const send_file_1 = require("./api/send-file");
 const send_image_1 = require("./api/send-image");
 const send_message_1 = require("./api/send-message");
 const set_conversation_topic_1 = require("./api/set-conversation-topic");
@@ -104,6 +105,11 @@ class Api extends events_1.default.EventEmitter {
     sendImage(message, conversationId) {
         return __awaiter(this, void 0, void 0, function* () {
             return send_image_1.sendImage(this.io, this.context, message, conversationId);
+        });
+    }
+    sendFile(message, conversationId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return send_file_1.sendFile(this.io, this.context, message, conversationId);
         });
     }
     getState() {

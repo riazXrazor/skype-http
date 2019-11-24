@@ -17,24 +17,28 @@ interface SendMessageQuery {
 }
 
 export async function sendMessage(
-  io: io.HttpIo, apiContext: Context,
+  io: io.HttpIo,
+  apiContext: Context,
   message: api.NewMessage,
-  conversationId: string,
+  conversationId: string
 ): Promise<api.SendMessageResult> {
-
   const query: SendMessageQuery = {
     clientmessageid: String(getCurrentTime() + Math.floor(10000 * Math.random())),
     content: String(message.textContent),
     messagetype: "RichText",
-    contenttype: "text",
+    contenttype: "text"
   };
   const requestOptions: io.PostOptions = {
-    uri: messagesUri.messages(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId),
+    uri: messagesUri.messages(
+      apiContext.registrationToken.host,
+      messagesUri.DEFAULT_USER,
+      conversationId
+    ),
     cookies: apiContext.cookies,
     body: JSON.stringify(query),
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw,
-    },
+      RegistrationToken: apiContext.registrationToken.raw
+    }
   };
   const res: io.Response = await io.post(requestOptions);
 
@@ -48,6 +52,6 @@ export async function sendMessage(
     clientMessageId: query.clientmessageid,
     arrivalTime: body.OriginalArrivalTime,
     textContent: query.content,
-    MessageId: parsed.message,
+    MessageId: parsed.message
   };
 }

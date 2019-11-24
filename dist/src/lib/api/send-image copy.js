@@ -97,4 +97,4 @@ function sendImage(io, apiContext, img, conversationId) {
     });
 }
 exports.sendImage = sendImage;
-//# sourceMappingURL=send-image.js.map
+//# sourceMappingURL=send-image copy.js.map

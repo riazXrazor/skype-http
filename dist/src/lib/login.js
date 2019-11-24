@@ -46,10 +46,10 @@ function login(options) {
         const skypeToken = yield microsoftAccount.login({
             credentials: {
                 login: options.credentials.username,
-                password: options.credentials.password,
+                password: options.credentials.password
             },
             httpIo: options.io,
-            cookies,
+            cookies
         });
         if (options.verbose) {
             console.log("Acquired SkypeToken");
@@ -75,7 +75,7 @@ function login(options) {
             username,
             skypeToken,
             cookies,
-            registrationToken,
+            registrationToken
         };
     });
 }
@@ -89,18 +89,18 @@ function subscribeToResources(ioOptions, registrationToken) {
                 "/v1/threads/ALL",
                 "/v1/users/ME/contacts/ALL",
                 "/v1/users/ME/conversations/ALL/messages",
-                "/v1/users/ME/conversations/ALL/properties",
+                "/v1/users/ME/conversations/ALL/properties"
             ],
             template: "raw",
-            channelType: "httpLongPoll",
+            channelType: "httpLongPoll" // TODO: use websockets ?
         };
         const requestOptions = {
             uri: messagesUri.subscriptions(registrationToken.host),
             cookies: ioOptions.cookies,
             body: JSON.stringify(requestDocument),
             headers: {
-                RegistrationToken: registrationToken.raw,
-            },
+                RegistrationToken: registrationToken.raw
+            }
         };
         const res = yield ioOptions.io.post(requestOptions);
         if (res.statusCode !== 201) {
@@ -135,15 +135,15 @@ function createPresenceDocs(ioOptions, registrationToken) {
             type: "EndpointPresenceDoc",
             selfLink: "uri",
             privateInfo: {
-                epname: "skype",
+                epname: "skype" // Name of the endpoint (normally the name of the host)
             },
             publicInfo: {
                 capabilities: "video|audio",
                 type: 1,
                 skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
                 nodeInfo: "xx",
-                version: `${Consts.SKYPEWEB_CLIENTINFO_VERSION}//${Consts.SKYPEWEB_CLIENTINFO_NAME}`,
-            },
+                version: `${Consts.SKYPEWEB_CLIENTINFO_VERSION}//${Consts.SKYPEWEB_CLIENTINFO_NAME}`
+            }
         };
         const uri = messagesUri.endpointMessagingService(registrationToken.host, messagesUri.DEFAULT_USER, registrationToken.endpointId);
         const requestOptions = {
@@ -151,8 +151,8 @@ function createPresenceDocs(ioOptions, registrationToken) {
             cookies: ioOptions.cookies,
             body: JSON.stringify(requestBody),
             headers: {
-                RegistrationToken: registrationToken.raw,
-            },
+                RegistrationToken: registrationToken.raw
+            }
         };
         const res = yield ioOptions.io.put(requestOptions);
         if (res.statusCode !== 200) {

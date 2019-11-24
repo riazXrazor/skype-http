@@ -42,7 +42,7 @@ const MRI_TYPE_TO_TYPE_CODE = new Map([
     [MriType.Msn, "1"],
     [MriType.Skype, "8"],
     [MriType.Pstn, "4"],
-    [MriType.GroupConversation, "19"],
+    [MriType.GroupConversation, "19"]
 ]);
 const MRI_TYPE_FROM_TYPE_CODE = reverseMap(MRI_TYPE_TO_TYPE_CODE);
 const MRI_TYPE_TO_TYPE_NAME = new Map([
@@ -51,7 +51,7 @@ const MRI_TYPE_TO_TYPE_NAME = new Map([
     [MriType.Msn, "msn"],
     [MriType.Skype, "skype"],
     [MriType.Pstn, "pstn"],
-    [MriType.GroupConversation, "group_conversation"],
+    [MriType.GroupConversation, "group_conversation"]
 ]);
 const MRI_TYPE_FROM_TYPE_NAME = reverseMap(MRI_TYPE_TO_TYPE_NAME);
 // TODO: Move outside of this module

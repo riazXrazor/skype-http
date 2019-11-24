@@ -4,7 +4,7 @@ import { Conversation } from "../interfaces/api/conversation";
 import * as io from "../interfaces/http-io";
 import {
   Conversation as NativeConversation,
-  Thread as NativeThread,
+  Thread as NativeThread
 } from "../interfaces/native-api/conversation";
 import * as messagesUri from "../messages-uri";
 import { formatConversation, formatThread } from "../utils/formatters";
@@ -28,19 +28,25 @@ interface GetConversationQuery {
 export async function getConversation(
   io: io.HttpIo,
   apiContext: Context,
-  conversationId: string,
+  conversationId: string
 ): Promise<Conversation> {
   const query: GetConversationQuery = {
     startTime: "0",
     view: "msnp24Equivalent",
-    targetType: "Passport|Skype|Lync|Thread",
+    targetType: "Passport|Skype|Lync|Thread"
   };
 
   let uri: string;
-  if (conversationId.indexOf("19:") === 0) { // group discussion
+  if (conversationId.indexOf("19:") === 0) {
+    // group discussion
     uri = messagesUri.thread(apiContext.registrationToken.host, conversationId);
-  } else { // 8: private conversation
-    uri = messagesUri.conversation(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId);
+  } else {
+    // 8: private conversation
+    uri = messagesUri.conversation(
+      apiContext.registrationToken.host,
+      messagesUri.DEFAULT_USER,
+      conversationId
+    );
   }
 
   const requestOptions: io.GetOptions = {
@@ -48,8 +54,8 @@ export async function getConversation(
     cookies: apiContext.cookies,
     queryString: query,
     headers: {
-      RegistrationToken: apiContext.registrationToken.raw,
-    },
+      RegistrationToken: apiContext.registrationToken.raw
+    }
   };
   const res: io.Response = await io.get(requestOptions);
 
@@ -59,9 +65,9 @@ export async function getConversation(
   const body: NativeConversation | NativeThread = JSON.parse(res.body);
 
   if (body.type === "Thread") {
-    return formatThread(<NativeThread> body);
+    return formatThread(<NativeThread>body);
   } else if (body.type === "Conversation") {
-    return formatConversation(<NativeConversation> body);
+    return formatConversation(<NativeConversation>body);
   } else {
     return Promise.reject(new Incident("unknonwn-type", "Unknown type for conversation..."));
   }

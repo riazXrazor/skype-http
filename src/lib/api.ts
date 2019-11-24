@@ -1,31 +1,30 @@
 import events from "events";
-import { acceptContactRequest } from "./api/accept-contact-request";
-import { addMemberToConversation } from "./api/add-member";
-import { createConversation } from "./api/create-conversation";
-import { declineContactRequest } from "./api/decline-contact-request";
-import { getContact } from "./api/get-contact";
-import { getConversation } from "./api/get-conversation";
-import { getConversations } from "./api/get-conversations";
-import { getJoinUrl } from "./api/get-join-url";
-import { sendImage } from "./api/send-image";
-import { sendMessage } from "./api/send-message";
-import { setConversationTopic } from "./api/set-conversation-topic";
-import { setStatus } from "./api/set-status";
-import { ContactsInterface, ContactsService } from "./contacts/contacts";
+import {acceptContactRequest} from "./api/accept-contact-request";
+import {addMemberToConversation} from "./api/add-member";
+import {createConversation} from "./api/create-conversation";
+import {declineContactRequest} from "./api/decline-contact-request";
+import {getContact} from "./api/get-contact";
+import {getConversation} from "./api/get-conversation";
+import {getConversations} from "./api/get-conversations";
+import {getJoinUrl} from "./api/get-join-url";
+import {sendFile} from "./api/send-file";
+import {sendImage} from "./api/send-image";
+import {sendMessage} from "./api/send-message";
+import {setConversationTopic} from "./api/set-conversation-topic";
+import {setStatus} from "./api/set-status";
+import {ContactsInterface, ContactsService} from "./contacts/contacts";
 import * as api from "./interfaces/api/api";
-import { Contact as _Contact } from "./interfaces/api/contact";
-import { Context as ApiContext } from "./interfaces/api/context";
-import { Conversation } from "./interfaces/api/conversation";
+import {Contact as _Contact} from "./interfaces/api/contact";
+import {Context as ApiContext} from "./interfaces/api/context";
+import {Conversation} from "./interfaces/api/conversation";
 import * as apiEvents from "./interfaces/api/events";
-import { HttpIo } from "./interfaces/http-io";
-import { AllUsers } from "./interfaces/native-api/conversation";
-import { MessagesPoller } from "./polling/messages-poller";
-import { Contact } from "./types/contact";
-import { Invite } from "./types/invite";
+import {HttpIo} from "./interfaces/http-io";
+import {AllUsers} from "./interfaces/native-api/conversation";
+import {MessagesPoller} from "./polling/messages-poller";
+import {Contact} from "./types/contact";
+import {Invite} from "./types/invite";
 
-export interface ApiEvents extends NodeJS.EventEmitter {
-
-}
+export interface ApiEvents extends NodeJS.EventEmitter {}
 
 export class Api extends events.EventEmitter implements ApiEvents {
   io: HttpIo;
@@ -41,7 +40,9 @@ export class Api extends events.EventEmitter implements ApiEvents {
     this.messagesPoller = new MessagesPoller(this.io, this.context);
     this.messagesPoller.on("error", (err: Error) => this.emit("error", err));
     // tslint:disable-next-line:no-void-expression
-    this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) => this.handlePollingEvent(ev));
+    this.messagesPoller.on("event-message", (ev: apiEvents.EventMessage) =>
+      this.handlePollingEvent(ev),
+    );
     this.contactsService = new ContactsService(this.io);
   }
 
@@ -75,7 +76,10 @@ export class Api extends events.EventEmitter implements ApiEvents {
     return getConversations(this.io, this.context);
   }
 
-  async sendMessage(message: api.NewMessage, conversationId: string): Promise<api.SendMessageResult> {
+  async sendMessage(
+    message: api.NewMessage,
+    conversationId: string,
+  ): Promise<api.SendMessageResult> {
     return sendMessage(this.io, this.context, message, conversationId);
   }
 
@@ -97,6 +101,10 @@ export class Api extends events.EventEmitter implements ApiEvents {
 
   async sendImage(message: api.NewImage, conversationId: string): Promise<api.SendMessageResult> {
     return sendImage(this.io, this.context, message, conversationId);
+  }
+
+  async sendFile(message: api.NewFile, conversationId: string): Promise<api.SendMessageResult> {
+    return sendFile(this.io, this.context, message, conversationId);
   }
 
   getState(): ApiContext.Json {

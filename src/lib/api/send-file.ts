@@ -17,14 +17,20 @@ interface SendMessageQuery {
   contenttype: string;
 }
 
-export async function sendImage(
+async function getFilesizeInBytes(filename: string) {
+  const stats: any = await fs.stat(filename);
+  const fileSizeInBytes: any = stats["size"];
+  return fileSizeInBytes;
+}
+
+export async function sendFile(
   io: io.HttpIo,
   apiContext: Context,
-  img: api.NewImage,
+  img: api.NewFile,
   conversationId: string,
 ): Promise<api.SendMessageResult> {
   const bodyNewObject: any = {
-    type: "pish/image",
+    type: "sharing/file",
     permissions: {[conversationId]: ["read"]},
     filename: img.name,
   };
@@ -42,47 +48,48 @@ export async function sendImage(
   };
 
   const resNewObject: io.Response = await io.post(requestOptionsNewObject);
-  console.log(resNewObject);
+
   if (resNewObject.statusCode !== 201) {
-    return Promise.reject(new Incident("send-image", "Received wrong return code"));
+    return Promise.reject(new Incident("send-file", "Received wrong return code"));
   }
   const objectId: string = JSON.parse(resNewObject.body).id;
 
   const file: Buffer = await fs.readFile(img.file);
+  const filesize: any = await getFilesizeInBytes(img.file);
   const requestOptionsPutObject: io.PutOptions = {
-    uri: messagesUri.objectContent("api.asm.skype.com", objectId, "imgpsh"),
+    uri: messagesUri.objectContent("api.asm.skype.com", objectId, "original"),
     cookies: apiContext.cookies,
     body: file,
     headers: {
       Authorization: `skype_token ${apiContext.skypeToken.value}`,
       "Content-Type": "multipart/form-data",
       "Content-Length": file.byteLength.toString(10),
+      "X-Client-Version": "0/0.0.0.0",
     },
   };
 
   const resObject: io.Response = await io.put(requestOptionsPutObject);
-
+  // console.log(requestOptionsPutObject);
   if (resObject.statusCode !== 201) {
-    return Promise.reject(new Incident("send-image", "Received wrong return code"));
+    return Promise.reject(new Incident("send-file", "Received wrong return code"));
   }
 
   const pictureUri: string = messagesUri.object("api.asm.skype.com", objectId);
   const pictureThumbnailUri: string = messagesUri.objectView(
     "api.asm.skype.com",
     objectId,
-    "imgt1",
+    "original",
   );
-
+  const link: string = `<a href="https://login.skype.com/login/sso?go=webclient.xmm&amp;docid=${objectId}">
+  https://login.skype.com/login/sso?go=webclient.xmm&amp;docid=${objectId}</a>`;
   const query: SendMessageQuery = {
     clientmessageid: String(getCurrentTime() + Math.floor(10000 * Math.random())),
-    content: `
-      <URIObject type="Picture.1" uri="${pictureUri}" url_thumbnail="${pictureThumbnailUri}">
-        loading...
+    content: `<URIObject type="File.1" uri="${pictureUri}" url_thumbnail="${pictureThumbnailUri}">
+        To view this file,go to:${link}
         <OriginalName v="${img.name}"/>
-        <meta type="photo" originalName="${img.name}"/>
-      </URIObject>
-    `,
-    messagetype: "RichText/UriObject",
+        <FileSize v="${filesize}"></FileSize>
+      </URIObject>`,
+    messagetype: "RichText/Media_GenericFile",
     contenttype: "text",
   };
   const requestOptions: io.PostOptions = {

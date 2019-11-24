@@ -20,10 +20,17 @@ const fs = __importStar(require("async-file"));
 const incident_1 = require("incident");
 const messagesUri = __importStar(require("../messages-uri"));
 const utils_1 = require("../utils");
-function sendImage(io, apiContext, img, conversationId) {
+function getFilesizeInBytes(filename) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const stats = yield fs.stat(filename);
+        const fileSizeInBytes = stats["size"];
+        return fileSizeInBytes;
+    });
+}
+function sendFile(io, apiContext, img, conversationId) {
     return __awaiter(this, void 0, void 0, function* () {
         const bodyNewObject = {
-            type: "pish/image",
+            type: "sharing/file",
             permissions: { [conversationId]: ["read"] },
             filename: img.name,
         };
@@ -40,38 +47,40 @@ function sendImage(io, apiContext, img, conversationId) {
             },
         };
         const resNewObject = yield io.post(requestOptionsNewObject);
-        console.log(resNewObject);
         if (resNewObject.statusCode !== 201) {
-            return Promise.reject(new incident_1.Incident("send-image", "Received wrong return code"));
+            return Promise.reject(new incident_1.Incident("send-file", "Received wrong return code"));
         }
         const objectId = JSON.parse(resNewObject.body).id;
         const file = yield fs.readFile(img.file);
+        const filesize = yield getFilesizeInBytes(img.file);
         const requestOptionsPutObject = {
-            uri: messagesUri.objectContent("api.asm.skype.com", objectId, "imgpsh"),
+            uri: messagesUri.objectContent("api.asm.skype.com", objectId, "original"),
             cookies: apiContext.cookies,
             body: file,
             headers: {
                 Authorization: `skype_token ${apiContext.skypeToken.value}`,
                 "Content-Type": "multipart/form-data",
                 "Content-Length": file.byteLength.toString(10),
+                "X-Client-Version": "0/0.0.0.0",
             },
         };
         const resObject = yield io.put(requestOptionsPutObject);
+        // console.log(requestOptionsPutObject);
         if (resObject.statusCode !== 201) {
-            return Promise.reject(new incident_1.Incident("send-image", "Received wrong return code"));
+            return Promise.reject(new incident_1.Incident("send-file", "Received wrong return code"));
         }
         const pictureUri = messagesUri.object("api.asm.skype.com", objectId);
-        const pictureThumbnailUri = messagesUri.objectView("api.asm.skype.com", objectId, "imgt1");
+        const pictureThumbnailUri = messagesUri.objectView("api.asm.skype.com", objectId, "original");
+        const link = `<a href="https://login.skype.com/login/sso?go=webclient.xmm&amp;docid=${objectId}">
+  https://login.skype.com/login/sso?go=webclient.xmm&amp;docid=${objectId}</a>`;
         const query = {
             clientmessageid: String(utils_1.getCurrentTime() + Math.floor(10000 * Math.random())),
-            content: `
-      <URIObject type="Picture.1" uri="${pictureUri}" url_thumbnail="${pictureThumbnailUri}">
-        loading...
+            content: `<URIObject type="File.1" uri="${pictureUri}" url_thumbnail="${pictureThumbnailUri}">
+        To view this file,go to:${link}
         <OriginalName v="${img.name}"/>
-        <meta type="photo" originalName="${img.name}"/>
-      </URIObject>
-    `,
-            messagetype: "RichText/UriObject",
+        <FileSize v="${filesize}"></FileSize>
+      </URIObject>`,
+            messagetype: "RichText/Media_GenericFile",
             contenttype: "text",
         };
         const requestOptions = {
@@ -96,5 +105,5 @@ function sendImage(io, apiContext, img, conversationId) {
         };
     });
 }
-exports.sendImage = sendImage;
-//# sourceMappingURL=send-image.js.map
+exports.sendFile = sendFile;
+//# sourceMappingURL=send-file.js.map

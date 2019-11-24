@@ -25,15 +25,15 @@ function sendMessage(io, apiContext, message, conversationId) {
             clientmessageid: String(utils_1.getCurrentTime() + Math.floor(10000 * Math.random())),
             content: String(message.textContent),
             messagetype: "RichText",
-            contenttype: "text",
+            contenttype: "text"
         };
         const requestOptions = {
             uri: messagesUri.messages(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId),
             cookies: apiContext.cookies,
             body: JSON.stringify(query),
             headers: {
-                RegistrationToken: apiContext.registrationToken.raw,
-            },
+                RegistrationToken: apiContext.registrationToken.raw
+            }
         };
         const res = yield io.post(requestOptions);
         console.log(JSON.stringify(res, null, 2));
@@ -46,7 +46,7 @@ function sendMessage(io, apiContext, message, conversationId) {
             clientMessageId: query.clientmessageid,
             arrivalTime: body.OriginalArrivalTime,
             textContent: query.content,
-            MessageId: parsed.message,
+            MessageId: parsed.message
         };
     });
 }

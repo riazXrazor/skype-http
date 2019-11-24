@@ -36,15 +36,15 @@ export interface LoginOptions {
  */
 export async function login(options: LoginOptions): Promise<ApiContext> {
   const cookies: toughCookie.MemoryCookieStore = new toughCookie.MemoryCookieStore();
-  const ioOptions: IoOptions = {io: options.io, cookies};
+  const ioOptions: IoOptions = { io: options.io, cookies };
 
   const skypeToken: SkypeToken = await microsoftAccount.login({
     credentials: {
       login: options.credentials.username,
-      password: options.credentials.password,
+      password: options.credentials.password
     },
     httpIo: options.io,
-    cookies,
+    cookies
   });
   if (options.verbose) {
     console.log("Acquired SkypeToken");
@@ -61,7 +61,7 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     ioOptions.io,
     ioOptions.cookies,
     skypeToken,
-    Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST,
+    Consts.SKYPEWEB_DEFAULT_MESSAGES_HOST
   );
   if (options.verbose) {
     console.log("Acquired RegistrationToken");
@@ -81,11 +81,14 @@ export async function login(options: LoginOptions): Promise<ApiContext> {
     username,
     skypeToken,
     cookies,
-    registrationToken,
+    registrationToken
   };
 }
 
-async function subscribeToResources(ioOptions: IoOptions, registrationToken: RegistrationToken): Promise<void> {
+async function subscribeToResources(
+  ioOptions: IoOptions,
+  registrationToken: RegistrationToken
+): Promise<void> {
   // TODO(demurgos): typedef
   // tslint:disable-next-line:typedef
   const requestDocument = {
@@ -93,10 +96,10 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
       "/v1/threads/ALL",
       "/v1/users/ME/contacts/ALL",
       "/v1/users/ME/conversations/ALL/messages",
-      "/v1/users/ME/conversations/ALL/properties",
+      "/v1/users/ME/conversations/ALL/properties"
     ],
     template: "raw",
-    channelType: "httpLongPoll", // TODO: use websockets ?
+    channelType: "httpLongPoll" // TODO: use websockets ?
   };
 
   const requestOptions: io.PostOptions = {
@@ -104,14 +107,18 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
     cookies: ioOptions.cookies,
     body: JSON.stringify(requestDocument),
     headers: {
-      RegistrationToken: registrationToken.raw,
-    },
+      RegistrationToken: registrationToken.raw
+    }
   };
 
   const res: io.Response = await ioOptions.io.post(requestOptions);
   if (res.statusCode !== 201) {
-    return Promise.reject(new Incident("net",
-      `Unable to subscribe to resources: statusCode: ${res.statusCode} body: ${res.body}`));
+    return Promise.reject(
+      new Incident(
+        "net",
+        `Unable to subscribe to resources: statusCode: ${res.statusCode} body: ${res.body}`
+      )
+    );
   }
 
   // Example response:
@@ -130,10 +137,12 @@ async function subscribeToResources(ioOptions: IoOptions, registrationToken: Reg
   //       "connection": "close"
   //   }
   // }
-
 }
 
-async function createPresenceDocs(ioOptions: IoOptions, registrationToken: RegistrationToken): Promise<any> {
+async function createPresenceDocs(
+  ioOptions: IoOptions,
+  registrationToken: RegistrationToken
+): Promise<any> {
   // this is the exact json that is needed to register endpoint for setting of status.
   // demurgos: If I remember well enough, it's order dependant.
   // TODO: typedef
@@ -143,21 +152,21 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
     type: "EndpointPresenceDoc",
     selfLink: "uri",
     privateInfo: {
-      epname: "skype", // Name of the endpoint (normally the name of the host)
+      epname: "skype" // Name of the endpoint (normally the name of the host)
     },
     publicInfo: {
       capabilities: "video|audio",
       type: 1,
       skypeNameVersion: Consts.SKYPEWEB_CLIENTINFO_NAME,
       nodeInfo: "xx",
-      version: `${Consts.SKYPEWEB_CLIENTINFO_VERSION}//${Consts.SKYPEWEB_CLIENTINFO_NAME}`,
-    },
+      version: `${Consts.SKYPEWEB_CLIENTINFO_VERSION}//${Consts.SKYPEWEB_CLIENTINFO_NAME}`
+    }
   };
 
   const uri: string = messagesUri.endpointMessagingService(
     registrationToken.host,
     messagesUri.DEFAULT_USER,
-    registrationToken.endpointId,
+    registrationToken.endpointId
   );
 
   const requestOptions: io.PutOptions = {
@@ -165,8 +174,8 @@ async function createPresenceDocs(ioOptions: IoOptions, registrationToken: Regis
     cookies: ioOptions.cookies,
     body: JSON.stringify(requestBody),
     headers: {
-      RegistrationToken: registrationToken.raw,
-    },
+      RegistrationToken: registrationToken.raw
+    }
   };
 
   const res: io.Response = await ioOptions.io.put(requestOptions);

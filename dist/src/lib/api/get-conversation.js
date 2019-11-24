@@ -24,13 +24,15 @@ function getConversation(io, apiContext, conversationId) {
         const query = {
             startTime: "0",
             view: "msnp24Equivalent",
-            targetType: "Passport|Skype|Lync|Thread",
+            targetType: "Passport|Skype|Lync|Thread"
         };
         let uri;
-        if (conversationId.indexOf("19:") === 0) { // group discussion
+        if (conversationId.indexOf("19:") === 0) {
+            // group discussion
             uri = messagesUri.thread(apiContext.registrationToken.host, conversationId);
         }
-        else { // 8: private conversation
+        else {
+            // 8: private conversation
             uri = messagesUri.conversation(apiContext.registrationToken.host, messagesUri.DEFAULT_USER, conversationId);
         }
         const requestOptions = {
@@ -38,8 +40,8 @@ function getConversation(io, apiContext, conversationId) {
             cookies: apiContext.cookies,
             queryString: query,
             headers: {
-                RegistrationToken: apiContext.registrationToken.raw,
-            },
+                RegistrationToken: apiContext.registrationToken.raw
+            }
         };
         const res = yield io.get(requestOptions);
         if (res.statusCode !== 200) {

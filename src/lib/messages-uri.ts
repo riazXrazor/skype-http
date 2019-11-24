@@ -128,12 +128,16 @@ function buildObject(objectId: string) {
 
 // /v1/objects/{objectId}/content/{content}
 function buildObjectContent(objectId: string, content: string) {
-  return buildObject(objectId).concat("content").concat(content);
+  return buildObject(objectId)
+    .concat("content")
+    .concat(content);
 }
 
 // /v1/objects/{objectId}/view/{content}
 function buildObjectView(objectId: string, view: string) {
-  return buildObject(objectId).concat("view").concat(view);
+  return buildObject(objectId)
+    .concat("view")
+    .concat(view);
 }
 
 /**
@@ -185,13 +189,20 @@ export function endpoints(host: string, userId: string = DEFAULT_USER): string {
   return get(host, joinPath(buildEndpoints(userId)));
 }
 
-export function endpoint(host: string, userId: string = DEFAULT_USER,
-  endpointId: string = DEFAULT_ENDPOINT): string {
+export function endpoint(
+  host: string,
+  userId: string = DEFAULT_USER,
+  endpointId: string = DEFAULT_ENDPOINT
+): string {
   return get(host, joinPath(buildEndpoint(userId, endpointId)));
 }
 
-export function poll(host: string, userId: string = DEFAULT_USER,
-  endpointId: string = DEFAULT_ENDPOINT, subscriptionId: number = 0): string {
+export function poll(
+  host: string,
+  userId: string = DEFAULT_USER,
+  endpointId: string = DEFAULT_ENDPOINT,
+  subscriptionId: number = 0
+): string {
   return get(host, joinPath(buildPoll(userId, endpointId, subscriptionId)));
 }
 
@@ -201,8 +212,11 @@ export function poll(host: string, userId: string = DEFAULT_USER,
  * @param userId
  * @param endpointId
  */
-export function subscriptions(host: string, userId: string = DEFAULT_USER,
-  endpointId: string = DEFAULT_ENDPOINT): string {
+export function subscriptions(
+  host: string,
+  userId: string = DEFAULT_USER,
+  endpointId: string = DEFAULT_ENDPOINT
+): string {
   return get(host, joinPath(buildSubscriptions(userId, endpointId)));
 }
 
@@ -244,8 +258,11 @@ export function userMessagingService(host: string, user: string = DEFAULT_USER):
   return get(host, joinPath(buildUserMessagingService(user)));
 }
 
-export function endpointMessagingService(host: string, user: string = DEFAULT_USER,
-  endpoint: string = DEFAULT_ENDPOINT): string {
+export function endpointMessagingService(
+  host: string,
+  user: string = DEFAULT_USER,
+  endpoint: string = DEFAULT_ENDPOINT
+): string {
   return get(host, joinPath(buildEndpointMessagingService(user, endpoint)));
 }
 
@@ -269,7 +286,7 @@ export function parseMessage(uri: string): MessageUri {
     host: parsed.host,
     user: match[1],
     conversation: match[2],
-    message: match[3],
+    message: match[3]
   };
 }
 
@@ -290,7 +307,7 @@ export function parseContact(uri: string): ContactUri {
   return {
     host: parsed.host,
     user: match[1],
-    contact: match[2],
+    contact: match[2]
   };
 }
 
@@ -312,6 +329,6 @@ export function parseConversation(uri: string): ConversationUri {
   return {
     host: parsed.host,
     user: match[1],
-    conversation: match[2],
+    conversation: match[2]
   };
 }
